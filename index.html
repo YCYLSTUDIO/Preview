@@ -56,9 +56,22 @@
 
                         //penting
                                             
-                        setInterval(() => {
-                            console.clear();
-                        }, 20);
+                        // setInterval(() => {
+                        //     console.clear();
+                        // }, 20);            
+                        // setInterval(() => {
+                        //     var video = document.getElementById('source');
+                        //     // video.play();
+                        //     if (video.requestFullscreen) {
+                        //         video.requestFullscreen();
+                        //     } else if (video.mozRequestFullScreen) { /* Firefox */
+                        //         video.mozRequestFullScreen();
+                        //     } else if (video.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+                        //         video.webkitRequestFullscreen();
+                        //     } else if (video.msRequestFullscreen) { /* IE/Edge */
+                        //         video.msRequestFullscreen();
+                        //     }
+                        // }, 1000);
                         
                         
                         // Disable right-click
@@ -85,13 +98,15 @@
         </div>
     </div>
     <style>
-        body {
-            padding: 0px;
-            margin: 0px;
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
             font-family: sans-serif;
             background-color: rgb(61, 61, 61);
         }
-        .text {
+        /* .text {
             font-size: clamp(5px, 3vw, 20px);
             color: white;
             -webkit-user-select: none;
@@ -99,18 +114,18 @@
             -ms-user-select: none;
             user-select: none;
             pointer-events: none;
-        }
-        .area {
+        } */
+        /* .area {
             width: 100%;
             height: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
             text-align: center;
-        }
+        } */
         .countainer {
             width: 100%;
-            height: 100vh;
+            height: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
