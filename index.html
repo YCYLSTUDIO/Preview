@@ -1,10 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta name="description"
+    content="Website ini digunakan untuk preview video warta gereja GUP Harvest.">
+
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Video</title>
+    <meta name="theme-color" content="rgb(61, 61, 61)"/>
+    <title>Preview Warta Gereja</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel="icon" href="icon/logoharvestssquare.webp"/>
+    <link rel="canonical"/>
 </head>
 <body>
     <div class="countainer">
@@ -41,12 +47,38 @@
                         // Get the download URL
                         videoRef.getDownloadURL().then(function(url) {
                             // `url` is the download URL for the video
-                            console.log('Video URL:', url);
+                            // console.log('Video URL:', url);
                             document.getElementById("source").src = url;
                         }).catch(function(error) {
                             // Handle any errors
                             console.error('Error getting video URL:', error);
                         });
+
+                        //penting
+                                            
+                        setInterval(() => {
+                            console.clear();
+                        }, 20);
+                        
+                        
+                        // Disable right-click
+                        document.addEventListener('contextmenu', (e) => e.preventDefault());
+                        
+                        function ctrlShiftKey(e, keyCode) {
+                          return e.ctrlKey && e.shiftKey && e.keyCode === keyCode.charCodeAt(0);
+                        }
+                        
+                        document.onkeydown = (e) => {
+                          // Disable F12, Ctrl + Shift + I, Ctrl + Shift + J, Ctrl + U
+                          if (
+                            event.keyCode === 123 ||
+                            ctrlShiftKey(e, 'I') ||
+                            ctrlShiftKey(e, 'J') ||
+                            ctrlShiftKey(e, 'C') ||
+                            (e.ctrlKey && e.keyCode === 'U'.charCodeAt(0))
+                          )
+                            return false;
+                        };
                     </script>
                 </div>
             </div>
