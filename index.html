@@ -17,6 +17,7 @@
         <video id="source" controls autoplay>
           Your browser does not support the video tag.
         </video>
+        <!-- <iframe id="source" frameborder="0"></iframe> -->
     </div>
     <div>
         <div>
@@ -39,40 +40,44 @@
                         };
                         firebase.initializeApp(firebaseConfig);
                         const database = firebase.database();
-                        const myRef = database.ref('warta');
+                        const myRefmp = database.ref('movie/preview');
                         const storage = firebase.storage();
+                        var videoRef2 = "";
+                        
+                        function start() {
+                            myRefmp.once('value')
+                            .then((snapshot) => {
+                                const datap = snapshot.val();
+                                videoRef2 = 'movie/' + datap;
+                                // console.log(datap);
+                                lanjut();
+                            })
+                            .catch((error) => {
+                                console.error("Error getting data:", error);
+                            });
+                        }
+                        start();
 
-                        var videoRef = storage.ref().child('movie/movie.mp4');
+                        
+                        function lanjut() {
+                            var videoRef = storage.ref().child(videoRef2);
 
-                        // Get the download URL
-                        videoRef.getDownloadURL().then(function(url) {
-                            // `url` is the download URL for the video
-                            // console.log('Video URL:', url);
-                            document.getElementById("source").src = url;
-                        }).catch(function(error) {
-                            // Handle any errors
-                            console.error('Error getting video URL:', error);
-                        });
+                            // Get the download URL
+                            videoRef.getDownloadURL().then(function(url) {
+                                // `url` is the download URL for the video
+                                // console.log('Video URL:', url);
+                                document.getElementById("source").src = url;
+                            }).catch(function(error) {
+                                // Handle any errors
+                                console.error('Error getting video URL:', error);
+                            });
+                        } 
 
                         //penting
                                             
-                        // setInterval(() => {
-                        //     console.clear();
-                        // }, 20);            
-                        // setInterval(() => {
-                        //     var video = document.getElementById('source');
-                        //     // video.play();
-                        //     if (video.requestFullscreen) {
-                        //         video.requestFullscreen();
-                        //     } else if (video.mozRequestFullScreen) { /* Firefox */
-                        //         video.mozRequestFullScreen();
-                        //     } else if (video.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
-                        //         video.webkitRequestFullscreen();
-                        //     } else if (video.msRequestFullscreen) { /* IE/Edge */
-                        //         video.msRequestFullscreen();
-                        //     }
-                        // }, 1000);
-                        
+                        setInterval(() => {
+                            console.clear();
+                        }, 20);
                         
                         // Disable right-click
                         document.addEventListener('contextmenu', (e) => e.preventDefault());
@@ -132,6 +137,10 @@
             text-align: center;
         }
         .countainer video {
+            width: 100%;
+            height: 100%;
+        }
+        .countainer iframe {
             width: 100%;
             height: 100%;
         }
