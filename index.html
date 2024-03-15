@@ -13,212 +13,95 @@
     <link rel="canonical"/>
 </head>
 <body>
-    <div class="homec" id="home">
-        <div id="place">
-            <h1 class="judul">Pilih Preview</h1>
+    <div class="countainer">
+        <video id="source" controls autoplay>
+          Your browser does not support the video tag.
+        </video>
+        <!-- <iframe id="source" frameborder="0"></iframe> -->
+    </div>
+    <div>
+        <div>
+            <div>
+                <div>
+                    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+                    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+                    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+                    <script>
+                        var firebase_data_script;
+                        const firebaseConfig = {
+                            apiKey: "AIzaSyDGekJTeEJscUiN1y7NPNKCuC65WFfipJM",
+                            authDomain: "gup-harvest.firebaseapp.com",
+                            databaseURL: "https://gup-harvest-default-rtdb.firebaseio.com",
+                            projectId: "gup-harvest",
+                            storageBucket: "gup-harvest.appspot.com",
+                            messagingSenderId: "512729674455",
+                            appId: "1:512729674455:web:c6ed645e4f5356af363692",
+                            measurementId: "G-5MJ30QJ6CS"
+                        };
+                        firebase.initializeApp(firebaseConfig);
+                        const database = firebase.database();
+                        const myRefmp = database.ref('movie/preview');
+                        const storage = firebase.storage();
+                        var videoRef2 = "";
+                        
+                        function start() {
+                            myRefmp.once('value')
+                            .then((snapshot) => {
+                                const datap = snapshot.val();
+                                videoRef2 = 'movie/' + datap.p1;
+                                // console.log(datap);
+                                lanjut();
+                            })
+                            .catch((error) => {
+                                console.error("Error getting data:", error);
+                            });
+                        }
+                        start();
+
+                        
+                        function lanjut() {
+                            var videoRef = storage.ref().child(videoRef2);
+
+                            // Get the download URL
+                            videoRef.getDownloadURL().then(function(url) {
+                                // `url` is the download URL for the video
+                                // console.log('Video URL:', url);
+                                document.getElementById("source").src = url;
+                            }).catch(function(error) {
+                                // Handle any errors
+                                console.error('Error getting video URL:', error);
+                            });
+                        } 
+
+                        //penting
+                                            
+                        setInterval(() => {
+                            console.clear();
+                        }, 20);
+                        
+                        // Disable right-click
+                        document.addEventListener('contextmenu', (e) => e.preventDefault());
+                        
+                        function ctrlShiftKey(e, keyCode) {
+                          return e.ctrlKey && e.shiftKey && e.keyCode === keyCode.charCodeAt(0);
+                        }
+                        
+                        document.onkeydown = (e) => {
+                          // Disable F12, Ctrl + Shift + I, Ctrl + Shift + J, Ctrl + U
+                          if (
+                            event.keyCode === 123 ||
+                            ctrlShiftKey(e, 'I') ||
+                            ctrlShiftKey(e, 'J') ||
+                            ctrlShiftKey(e, 'C') ||
+                            (e.ctrlKey && e.keyCode === 'U'.charCodeAt(0))
+                          )
+                            return false;
+                        };
+                    </script>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="countainer n" id="iframec">
-        <iframe src="frame.html" frameborder="0" class="frame" id="iframe"></iframe>
-    </div>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-    <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyDGekJTeEJscUiN1y7NPNKCuC65WFfipJM",
-            authDomain: "gup-harvest.firebaseapp.com",
-            databaseURL: "https://gup-harvest-default-rtdb.firebaseio.com",
-            projectId: "gup-harvest",
-            storageBucket: "gup-harvest.appspot.com",
-            messagingSenderId: "512729674455",
-            appId: "1:512729674455:web:c6ed645e4f5356af363692",
-            measurementId: "G-5MJ30QJ6CS"
-        };
-        firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
-        const myRefmp = database.ref('movie/preview');
-        const storage = firebase.storage();
-        const storageRef = storage.ref("movie");
-
-        let databasejs;
-
-        let databasejsp1 = [];
-        let databasejsp2 = [];
-
-        function start() {
-            myRefmp.once('value')
-            .then((snapshot) => {
-                const data = snapshot.val();
-                databasejs = data;
-                download();
-            })
-            .catch((error) => {
-                console.error("Error getting data:", error);
-            });
-        }
-
-        function download() {
-            if(databasejs.p1 == null || databasejs.p1 == "" || 
-               databasejs.p1 == undefined || databasejs.p1 == NaN) {
-                
-                // console.log("salah");
-            }
-            else {
-                var videoRef = storage.ref().child('movie/' + databasejs.p1);
-
-                // Get the download URL
-                videoRef.getDownloadURL().then(function(url) {
-                    databasejsp1 = url;
-
-                    download2();
-                }).catch(function(error) {
-                    console.error('Error getting video URL:', error);
-                });
-            }
-        }
-
-        var hitungan = 0;
-        function download2() {
-            if(databasejs.p2[hitungan] == null || databasejs.p2[hitungan] == "" || 
-               databasejs.p2[hitungan] == undefined || databasejs.p2[hitungan] == NaN) {
-
-                // console.log("salah");
-                start2();
-            }
-            else {
-                var videoRef = storage.ref().child('movie/' + databasejs.p2[hitungan]);
-
-                // Get the download URL
-                videoRef.getDownloadURL().then(function(url) {
-                    databasejsp2.push(url);
-
-                    hitungan++;
-                    download2();
-                }).catch(function(error) {
-                    console.error('Error getting video URL:', error);
-                });
-            }
-        }
-        
-
-
-        let data = ["(Belum Terpilih)","WARTA","TAMBAHAN INFORMASI"];
-
-        function remo() {
-            const select = document.getElementById("select");
-            
-            if(select) {
-                select.remove();
-            }
-            else {
-                console.log("elemen tidak ditemukan");
-            }
-        }
-
-        function start2() {
-            remo();
-            const iframec = document.getElementById("iframec");
-            const home = document.getElementById("home");
-            iframec.classList.add("n");
-            home.classList.remove("n");
-
-            const place = document.getElementById("place");
-            const child = document.createElement("select");
-            child.classList.add("selectc");
-            child.id = "select";
-            place.appendChild(child);
-
-            var hitungans = 0;
-
-            for(let i = 0; i < data.length - 1; i++) {
-                const childplace = document.getElementById("select");
-                const child2 = document.createElement("option");
-                child2.innerHTML = data[hitungans];
-                child2.value = hitungans;
-                childplace.appendChild(child2);
-                hitungans++;
-            }
-
-            for(let i = 0; i < databasejsp2.length; i++) {
-                const childplace = document.getElementById("select");
-                const child2 = document.createElement("option");
-                child2.innerHTML = data[2] + " " +(i + 1);
-                child2.value = hitungans;
-                childplace.appendChild(child2);
-                hitungans++;
-            }
-        }
-
-        function gant() {
-            const select = document.getElementById("select");
-            const iframec = document.getElementById("iframec");
-            const home = document.getElementById("home");
-            if(select.value == 0 || select.value == "" || select.value == null || select.value == undefined || select.value == NaN) {
-                // console.log(select.value, "salah");
-            }
-            else {
-                iframec.classList.remove("n");
-                home.classList.add("n");
-                next(select.value);
-            }
-        }
-
-        function next(num) {
-            if(num) {
-                console.log(num);
-                var iframe = document.getElementById('iframe');
-                var url = "";
-                // iframe.contentWindow.postMessage({ command: 'callFunction', data: url }, '*');
-
-                if(num == 1) {
-                    iframe.contentWindow.postMessage({ command: 'callFunction', data: databasejsp1 }, '*');
-                }
-                else if(num > 1) {
-                    iframe.contentWindow.postMessage({ command: 'callFunction', data: databasejsp2[num - 2] }, '*');
-                }
-            }
-        }
-
-        document.addEventListener("DOMContentLoaded", function(event) {
-            start();
-        });
-
-        setInterval(() => {
-            if(document.getElementById("select") !== null) {
-                document.getElementById("select").onchange = function() { gant() };
-            }
-        }, 50);
-
-
-        //penting
-            
-        setInterval(() => {
-            console.clear();
-        }, 20);
-        
-        
-        // Disable right-click
-        document.addEventListener('contextmenu', (e) => e.preventDefault());
-        
-        function ctrlShiftKey(e, keyCode) {
-          return e.ctrlKey && e.shiftKey && e.keyCode === keyCode.charCodeAt(0);
-        }
-        
-        document.onkeydown = (e) => {
-          // Disable F12, Ctrl + Shift + I, Ctrl + Shift + J, Ctrl + U
-          if (
-            event.keyCode === 123 ||
-            ctrlShiftKey(e, 'I') ||
-            ctrlShiftKey(e, 'J') ||
-            ctrlShiftKey(e, 'C') ||
-            (e.ctrlKey && e.keyCode === 'U'.charCodeAt(0))
-          )
-            return false;
-        };
-
-    </script>
-
     <style>
         body, html {
             margin: 0;
@@ -228,25 +111,23 @@
             font-family: sans-serif;
             background-color: rgb(61, 61, 61);
         }
-        .homec {
+        /* .text {
+            font-size: clamp(5px, 3vw, 20px);
+            color: white;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            pointer-events: none;
+        } */
+        /* .area {
             width: 100%;
             height: 100%;
-            /* background-color: red; */
             display: flex;
             justify-content: center;
             align-items: center;
             text-align: center;
-        }
-        .selectc {
-            padding: 5px 15px;
-        }
-        .judul {
-            font-size: clamp(20px, 5vw, 20px);
-            color: white;
-            margin: 0px;
-            margin-bottom: 10px;
-        }
-
+        } */
         .countainer {
             width: 100%;
             height: 100%;
@@ -255,12 +136,13 @@
             align-items: center;
             text-align: center;
         }
-        .countainer iframe {
+        .countainer video {
             width: 100%;
             height: 100%;
         }
-        .n {
-            display: none;
+        .countainer iframe {
+            width: 100%;
+            height: 100%;
         }
     </style>
 </body>
